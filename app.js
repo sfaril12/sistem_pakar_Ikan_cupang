@@ -569,8 +569,8 @@ function renderPenyakitCatalog() {
       const acc = document.getElementById(`acc-${code}`);
       if (acc) {
         acc.classList.toggle("open");
-        btn.textContent = acc.classList.contains("open") 
-          ? "Sembunyikan Panduan Medis" 
+        btn.textContent = acc.classList.contains("open")
+          ? "Sembunyikan Panduan Medis"
           : "Lihat Panduan Medis & Pencegahan";
       }
     });
@@ -865,13 +865,13 @@ function tampilkanHasilTanpaGejala(namaPemilik, namaIkan) {
     </div>
   `;
 
-  document.getElementById("hasil-deskripsi-penyakit").textContent = 
+  document.getElementById("hasil-deskripsi-penyakit").textContent =
     "Sesuai pengujian Blackbox pada Tabel 8 kasus nomor 3 di jurnal, apabila formulir nama diisi dengan benar namun pengguna tidak mencentang kondisi gejala penyakit apa pun, sistem memberikan kesimpulan bahwa ikan cupang berada dalam kondisi prima dan tidak terinfeksi penyakit.";
 
-  document.getElementById("hasil-pengobatan-penyakit").innerHTML = 
+  document.getElementById("hasil-pengobatan-penyakit").innerHTML =
     "<p>Tidak diperlukan obat-obatan kimia maupun karantina. Lanjutkan pemberian makan teratur dan rawat air secara berkala.</p>";
 
-  document.getElementById("hasil-pencegahan-penyakit").innerHTML = 
+  document.getElementById("hasil-pencegahan-penyakit").innerHTML =
     "<p>Pertahankan suhu air stabil (26°C - 28°C), gunakan air endapan bersih, dan berikan pakan hidup yang higienis secukupnya.</p>";
 
   document.getElementById("hasil-ranking-tbody").innerHTML = `
