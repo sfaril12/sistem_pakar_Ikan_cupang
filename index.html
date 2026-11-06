@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Pakar Diagnosa Penyakit Ikan Cupang</title>
+
+  <!-- Font Google Typography: Plus Jakarta Sans, Playfair Display, & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Top Bar & Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand-wrapper">
+        <div class="brand-monogram">SP</div>
+        <div>
+          <h1 class="brand-title">SISTEM PAKAR IKAN CUPANG</h1>
+        </div>
+      </div>
+
+      <!-- Navigasi Tab -->
+      <nav class="main-nav" aria-label="Navigasi Utama">
+        <button class="nav-tab active" data-target="diagnosa-section">
+          <span>Konsultasi Diagnosa</span>
+        </button>
+        <button class="nav-tab" data-target="penyakit-section">
+          <span>Daftar Penyakit (9)</span>
+        </button>
+        <button class="nav-tab" data-target="kaidah-section">
+          <span>Basis Kaidah & Gejala</span>
+        </button>
+        <button class="nav-tab" data-target="akurasi-section">
+          <span>Pengujian Akurasi (83,3%)</span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Konten Utama -->
+  <main class="container page-content">
+
+    <!-- Ringkasan Statistik Data Jurnal -->
+    <section class="stat-banner">
+      <div class="stat-item">
+        <span class="stat-number">9</span>
+        <span class="stat-label">Jenis Penyakit</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">30</span>
+        <span class="stat-label">Karakteristik Gejala</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">9</span>
+        <span class="stat-label">Kaidah IF-THEN</span>
+      </div>
+      <div class="stat-item stat-highlight">
+        <span class="stat-number">83,33%</span>
+        <span class="stat-label">Tingkat Akurasi Pakar</span>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TAB 1: KONSULTASI DIAGNOSA                              -->
+    <!-- ======================================================= -->
+    <section id="diagnosa-section" class="tab-content active">
+
+      <!-- Kartu Panduan Penggunaan -->
+      <div class="card intro-card">
+        <div class="card-header">
+          <div>
+            <span class="section-tag">Pemeriksaan Klinis Ikan</span>
+            <h2 class="card-title">Formulir Konsultasi Diagnosa Penyakit</h2>
+          </div>
+          <span class="method-badge">Metode: Forward Chaining + CF</span>
+        </div>
+        <p class="intro-description">
+          Isi data identitas pemilik dan lakukan pengamatan pada fisik serta tingkah laku ikan cupang (<em>Betta
+            splendens</em>).
+          Tentukan tingkat keyakinan Anda pada tiap gejala menggunakan tombol radio. Sistem secara otomatis mencocokkan
+          gejala dengan kaidah produksi pakar dan menghitung nilai kepastian diagnosis.
+        </p>
+      </div>
+
+      <form id="form-diagnosa" class="form-container" novalidate>
+
+        <!-- Formulir Identitas Pemilik & Ikan -->
+        <div class="card patient-form-card">
+          <div class="patient-grid">
+            <div class="form-field">
+              <label for="nama-pemilik" class="field-label">Nama Pemilik / Konsultan <span
+                  class="required-star">*</span></label>
+              <input type="text" id="nama-pemilik" class="text-input" placeholder="Masukkan nama lengkap Anda..."
+                autocomplete="off">
+              <span class="field-hint">Wajib diisi sesuai pengujian sistem jurnal</span>
+            </div>
+            <div class="form-field">
+              <label for="nama-ikan" class="field-label">Identitas / Jenis Ikan Cupang</label>
+              <input type="text" id="nama-ikan" class="text-input" placeholder="Contoh: Cupang Halfmoon Biru / Plakat">
+              <span class="field-hint">Opsional (untuk catatan lembar diagnosis)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panduan Pilihan Skala Keyakinan Pengguna (Tabel 6 Jurnal) -->
+        <div class="card scale-guide-card">
+          <div class="scale-header">
+            <h3 class="scale-title">Skala Pilihan Keyakinan Pengguna</h3>
+            <span class="scale-info">Pilih salah satu tingkat kepastian untuk setiap gejala di bawah:</span>
+          </div>
+          <div class="scale-pills-row">
+            <div class="scale-pill pill-pasti">
+              <span class="pill-name">Pasti Ya</span>
+              <span class="pill-val">+1.0</span>
+            </div>
+            <div class="scale-pill pill-hampir">
+              <span class="pill-name">Hampir Pasti Ya</span>
+              <span class="pill-val">+0.8</span>
+            </div>
+            <div class="scale-pill pill-besar">
+              <span class="pill-name">Kemungkinan Besar Ya</span>
+              <span class="pill-val">+0.6</span>
+            </div>
+            <div class="scale-pill pill-mungkin">
+              <span class="pill-name">Mungkin Ya</span>
+              <span class="pill-val">+0.4</span>
+            </div>
+            <div class="scale-pill pill-tidak">
+              <span class="pill-name">Tidak / Tidak Tahu</span>
+              <span class="pill-val">0.0 (Default)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toolbar Pencarian & Filter Cepat Gejala -->
+        <div class="symptom-toolbar">
+          <div class="search-box">
+            <input type="text" id="search-gejala"
+              placeholder="Cari nama atau kode gejala (misal: sirip, mata, insang, perut)..." autocomplete="off">
+          </div>
+          <div class="filter-categories" id="filter-buttons">
+            <button type="button" class="filter-btn active" data-filter="all">Semua Gejala (30)</button>
+            <button type="button" class="filter-btn" data-filter="sirip">Sirip & Ekor</button>
+            <button type="button" class="filter-btn" data-filter="insang">Insang & Pernapasan</button>
+            <button type="button" class="filter-btn" data-filter="mata">Mata & Mulut</button>
+            <button type="button" class="filter-btn" data-filter="tubuh">Tubuh & Perut</button>
+            <button type="button" class="filter-btn" data-filter="perilaku">Perilaku / Gerak</button>
+          </div>
+          <div class="symptom-counter">
+            Terpilih: <strong id="active-symptom-count">0</strong> dari 30 gejala
+          </div>
+        </div>
+
+        <!-- Daftar Kartu Gejala (Rapi, Luas, Responsif) -->
+        <div id="symptoms-list-wrapper" class="symptoms-list-wrapper">
+          <!-- Item diisi oleh app.js -->
+        </div>
+
+        <!-- Bilah Aksi Formulir -->
+        <div class="actions-sticky-bar">
+          <button type="submit" class="btn btn-navy-solid" id="btn-submit-diagnosa">
+            <span>Mulai Proses Diagnosa</span>
+          </button>
+          <button type="button" class="btn btn-creamy-outline" id="btn-sample-simulasi">
+            <span>Muat Contoh Simulasi Jurnal (G02, G03, G04)</span>
+          </button>
+          <button type="button" class="btn btn-ghost" id="btn-reset-diagnosa">
+            <span>Reset Semua Pilihan</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- HASIL DIAGNOSA (REKAM MEDIS SISTEM PAKAR) -->
+      <div id="hasil-diagnosa-wrapper" class="hasil-wrapper" style="display: none;">
+        <div class="card result-card">
+
+          <!-- Header Sertifikat Hasil -->
+          <div class="result-top-banner">
+            <div class="result-title-group">
+              <span class="report-code">HASIL KLASIFIKASI SISTEM PAKAR</span>
+              <h2 id="hasil-nama-penyakit" class="diagnosa-title">Bintik Putih</h2>
+              <p id="hasil-latin-penyakit" class="latin-subtitle">Ichthyophthirius multifiliis</p>
+            </div>
+
+            <div class="cf-badge-card">
+              <span class="cf-card-title">Tingkat Keyakinan (Certainty Factor)</span>
+              <div class="cf-progress-wrap">
+                <div class="cf-progress-bar">
+                  <div id="cf-progress-fill" class="cf-progress-fill" style="width: 76%;"></div>
+                </div>
+              </div>
+              <div class="cf-number-row">
+                <span id="hasil-cf-persen" class="cf-percent-text">75,9%</span>
+                <span id="hasil-cf-desimal" class="cf-decimal-text">Nilai CF: 0.759</span>
+              </div>
+              <span id="hasil-cf-kategori" class="cf-confidence-tag">Tingkat Keyakinan Tinggi</span>
+            </div>
+          </div>
+
+          <!-- Metadata Konsultasi -->
+          <div class="consultation-meta-grid">
+            <div class="meta-box">
+              <span class="meta-label">Nama Pemilik</span>
+              <span id="hasil-nama-pemilik" class="meta-data">-</span>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">Identitas Ikan</span>
+              <span id="hasil-nama-ikan" class="meta-data">-</span>
+            </div>
+            <div class="meta-box">
+              <span class="meta-label">Akurasi Sistem di Jurnal</span>
+              <span class="meta-data text-accent">83,33% (25 dari 30 Kasus Uji Pakar)</span>
+            </div>
+            <div class="meta-box meta-full">
+              <span class="meta-label">Kaidah Aturan Produksi (Forward Chaining)</span>
+              <span id="hasil-rule-matched" class="meta-code">-</span>
+            </div>
+          </div>
+
+          <!-- Rincian Gejala Terindikasi -->
+          <div class="result-section">
+            <h3 class="result-section-heading">Gejala Teridentifikasi pada Ikan Cupang Ini</h3>
+            <div id="hasil-daftar-gejala-terpilih" class="identified-symptoms-grid">
+              <!-- Diisi via app.js -->
+            </div>
+          </div>
+
+          <!-- Deskripsi & Penanganan Penyakit -->
+          <div class="result-section">
+            <h3 class="result-section-heading">Karakteristik Klinis Penyakit</h3>
+            <p id="hasil-deskripsi-penyakit" class="disease-description-box"></p>
+          </div>
+
+          <div class="treatment-grid">
+            <div class="treatment-card">
+              <h4 class="treatment-heading">Tata Cara Pengobatan Medis</h4>
+              <div id="hasil-pengobatan-penyakit" class="treatment-body"></div>
+            </div>
+            <div class="treatment-card">
+              <h4 class="treatment-heading">Tata Cara Pencegahan Lanjutan</h4>
+              <div id="hasil-pencegahan-penyakit" class="treatment-body"></div>
+            </div>
+          </div>
+
+          <!-- Tabel Peringkat Semua Kemungkinan Penyakit -->
+          <div class="result-section">
+            <h3 class="result-section-heading">Peringkat Klasifikasi Kemungkinan Penyakit Lainnya</h3>
+            <div class="table-frame">
+              <table class="neat-table">
+                <thead>
+                  <tr>
+                    <th style="width: 8%;">Rank</th>
+                    <th style="width: 12%;">Kode</th>
+                    <th style="width: 32%;">Nama Penyakit</th>
+                    <th style="width: 22%;">Kesesuaian Kaidah</th>
+                    <th style="width: 14%;">Skor CF</th>
+                    <th style="width: 12%;">Persentase</th>
+                  </tr>
+                </thead>
+                <tbody id="hasil-ranking-tbody">
+                  <!-- Diisi via app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Rincian Komputasi Certainty Factor -->
+          <div class="result-section calculation-section">
+            <h3 class="result-section-heading">Rincian Komputasi Formula Matematis Jurnal</h3>
+            <p class="calc-intro-text">
+              Perhitungan menggunakan <strong>Persamaan (1)</strong> untuk bobot gejala ($CF(e) = CF_{\text{user}}
+              \times CF_{\text{pakar}}$) dan <strong>Persamaan (2)</strong> untuk kombinasi sekuensial
+              ($CF_{\text{gabungan}} = CF_1 + CF_2 \times (1 - CF_1)$).
+            </p>
+            <pre id="hasil-kalkulasi-detail" class="math-steps-code"></pre>
+          </div>
+
+          <!-- Footer Aksi Hasil -->
+          <div class="result-footer-actions">
+            <button type="button" class="btn btn-navy-solid" onclick="window.print()">
+              <span>Cetak / Simpan Lembar Diagnosa</span>
+            </button>
+            <button type="button" class="btn btn-creamy-outline" id="btn-tutup-hasil">
+              <span>Tutup Hasil & Kembali ke Form</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TAB 2: DAFTAR 9 PENYAKIT (SESUAI JURNAL)                -->
+    <!-- ======================================================= -->
+    <section id="penyakit-section" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <span class="section-tag">Penjelasan Penyakit</span>
+            <h2 class="card-title">Katalog 9 Penyakit Ikan Cupang</h2>
+          </div>
+          <span class="method-badge">Basis Pengetahuan Pakar</span>
+        </div>
+        <p class="intro-description">
+          Berikut adalah 9 jenis penyakit ikan cupang hasil akuisisi data pakar dan literatur terverifikasi. Setiap
+          penyakit dilengkapi identifikasi klinis, tata cara penanganan isolasi, dosis obat terstandar, dan pencegahan
+          infeksi.
+        </p>
+
+        <div id="penyakit-catalog-grid" class="disease-cards-grid">
+          <!-- Diisi via app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TAB 3: BASIS ATURAN & GEJALA (FORWARD CHAINING)         -->
+    <!-- ======================================================= -->
+    <section id="kaidah-section" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <span class="section-tag">Penjelasan Lanjutan</span>
+            <h2 class="card-title">Kaidah Produksi & Matriks Gejala Pakar</h2>
+          </div>
+          <span class="method-badge">Mesin Inferensi IF-THEN</span>
+        </div>
+        <p class="intro-description">
+          Penalaran maju (<em>Forward Chaining</em>) menelusuri kumpulan fakta gejala yang diberikan pengguna menuju
+          aturan kaidah produksi IF-THEN untuk menetapkan hipotesis penyakit. Setiap premis gejala memiliki nilai
+          keyakinan pakar spesifik.
+        </p>
+
+        <!-- Kaidah Produksi IF-THEN -->
+        <div class="rule-block">
+          <h3 class="sub-block-title">Kaidah Produksi (Rules IF-THEN)</h3>
+          <div class="table-frame">
+            <table class="neat-table">
+              <thead>
+                <tr>
+                  <th style="width: 12%;">Kode</th>
+                  <th style="width: 25%;">Nama Penyakit</th>
+                  <th style="width: 63%;">Aturan Kaidah Produksi (Rule)</th>
+                </tr>
+              </thead>
+              <tbody id="kaidah-tbody">
+                <!-- Diisi via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Matriks 30 Gejala & Bobot Pakar -->
+        <div class="rule-block" style="margin-top: 35px;">
+          <h3 class="sub-block-title">Daftar 30 Gejala dan Nilai Keyakinan Pakar (CF Pakar)</h3>
+          <div class="table-frame">
+            <table class="neat-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%;">Kode</th>
+                  <th style="width: 45%;">Nama Gejala Klinis</th>
+                  <th style="width: 45%;">Relasi Penyakit Terkait & Bobot Pakar</th>
+                </tr>
+              </thead>
+              <tbody id="gejala-pakar-tbody">
+                <!-- Diisi via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================= -->
+    <!-- TAB 4: PENGUJIAN & AKURASI (TABEL 9 JURNAL)             -->
+    <!-- ======================================================= -->
+    <section id="akurasi-section" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <span class="section-tag">Penjelasan Pengujian</span>
+            <h2 class="card-title">Hasil Pengujian Sistem & Validasi Akurasi Pakar</h2>
+          </div>
+          <span class="accuracy-pill">Akurasi Pengujian: 83,33%</span>
+        </div>
+        <p class="intro-description">
+          Validasi sistem pakar dilakukan dengan menguji 30 sampel kasus riil yang dialami ikan cupang dan membandingkan
+          hasil diagnosis sistem dengan diagnosis yang diberikan langsung oleh pakar.
+        </p>
+
+        <!-- Rangkuman Metrik Akurasi -->
+        <div class="metrics-dashboard">
+          <div class="metric-box">
+            <span class="metric-caption">Total Kasus Uji</span>
+            <span class="metric-val">30</span>
+            <span class="metric-sub">Sampel uji ikan cupang</span>
+          </div>
+          <div class="metric-box match-box">
+            <span class="metric-caption">Hasil Sesuai Diagnosis Pakar</span>
+            <span class="metric-val text-green">25</span>
+            <span class="metric-sub">Keputusan sistem = pakar</span>
+          </div>
+          <div class="metric-box mismatch-box">
+            <span class="metric-caption">Hasil Deviasi / Tidak Sesuai</span>
+            <span class="metric-val text-brown">5</span>
+            <span class="metric-sub">Kasus gejala tumpang tindih</span>
+          </div>
+          <div class="metric-box highlight-metric-box">
+            <span class="metric-caption">Ketepatan Akurasi Sistem</span>
+            <span class="metric-val">83,33%</span>
+            <span class="metric-sub">Persamaan: (25 / 30) &times; 100%</span>
+          </div>
+        </div>
+
+        <!-- Tabel 30 Sampel Uji Jurnal -->
+        <div class="rule-block" style="margin-top: 30px;">
+          <h3 class="sub-block-title">Rincian Pengujian 30 Sampel Diagnosa (Sistem vs Pakar)</h3>
+          <div class="table-frame table-scroll-frame">
+            <table class="neat-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%;">Sampel</th>
+                  <th style="width: 35%;">Hasil Diagnosa Sistem</th>
+                  <th style="width: 35%;">Hasil Diagnosa Pakar</th>
+                  <th style="width: 20%;">Status Kesimpulan</th>
+                </tr>
+              </thead>
+              <tbody id="pengujian-tbody">
+                <!-- Diisi via app.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Rangkuman Blackbox Testing -->
+        <div class="blackbox-summary-box">
+          <h4>Hasil Pengujian Blackbox Antarmuka</h4>
+          <p>
+            Seluruh skenario pengujian fungsionalitas formulir dan inferensi menghasilkan status <strong>100%
+              Sesuai</strong>:
+          </p>
+          <ul>
+            <li>Validasi peringatan apabila form nama kosong: <em>"Nama lengkap tidak boleh kosong!"</em>.</li>
+            <li>Validasi simbol karakter tidak valid: <em>"Nama lengkap tidak valid!"</em>.</li>
+            <li>Validasi konsultasi tanpa memilih gejala abnormal: Menampilkan output <em>"Ikan Cupang Anda Tidak
+                Menderita Penyakit"</em>.</li>
+            <li>Inferensi forward chaining dan certainty factor berhasil menghasilkan diagnosis penyakit dan nilai
+              akurasi 83,33%.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-brand">Sistem Pakar Diagnosa Penyakit Ikan Cupang</div>
+      <p class="footer-desc">
+        Dikembangkan berdasarkan publikasi ilmiah: <em>"Implementasi Metode Forward Chaining dan Certainty Factor pada
+          Sistem Pakar Penyakit Ikan Cupang"</em>, Journal of Information System Management (JOISM), Vol. 5, No. 2,
+        2024.
+      </p>
+
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
