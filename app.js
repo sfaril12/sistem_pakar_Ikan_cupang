@@ -344,7 +344,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderPenyakitCatalog();
   renderKaidahTabel();
   renderGejalaPakarTabel();
-  renderPengujianTabel();
   bindFormEvents();
 });
 
@@ -599,7 +598,7 @@ function renderKaidahTabel() {
   });
 }
 
-// 6. Render Tabel Gejala & Bobot Pakar (Tab 3)
+// 6. Render Tabel Gejala & Bobot Pakar (Tab 3) - Tampilan Rapi Berbentuk Chip
 function renderGejalaPakarTabel() {
   const tbody = document.getElementById("gejala-pakar-tbody");
   if (!tbody) return;
@@ -610,18 +609,35 @@ function renderGejalaPakarTabel() {
     const relasiList = [];
     Object.keys(CF_PAKAR).forEach(pk => {
       if (CF_PAKAR[pk][g.kode] !== undefined) {
-        relasiList.push(`<strong>${pk}</strong> (${DATA_PENYAKIT[pk].nama}): <em>${CF_PAKAR[pk][g.kode]}</em>`);
+        relasiList.push({
+          kode: pk,
+          nama: DATA_PENYAKIT[pk].nama,
+          cf: CF_PAKAR[pk][g.kode]
+        });
       }
     });
 
-    const relasiHtml = relasiList.length > 0 
-      ? relasiList.join(" &bull; ") 
-      : "<span style='color:#888;'>Tidak terkait langsung</span>";
+    let relasiHtml = "";
+    if (relasiList.length > 0) {
+      relasiHtml = `
+        <div class="relasi-chip-container">
+          ${relasiList.map(item => `
+            <div class="relasi-chip">
+              <span class="relasi-chip-code">${item.kode}</span>
+              <span class="relasi-chip-name">${item.nama}</span>
+              <span class="relasi-chip-weight">CF ${item.cf.toFixed(1)}</span>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    } else {
+      relasiHtml = `<span class="relasi-chip-empty">Tidak terkait langsung</span>`;
+    }
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td><span class="rank-badge">${g.kode}</span></td>
-      <td><strong>${g.nama}</strong></td>
+      <td><strong style="color: var(--navy-900); font-weight: 600;">${g.nama}</strong></td>
       <td>${relasiHtml}</td>
     `;
     tbody.appendChild(tr);
@@ -658,7 +674,6 @@ function renderPengujianTabel() {
 function bindFormEvents() {
   const form = document.getElementById("form-diagnosa");
   const btnReset = document.getElementById("btn-reset-diagnosa");
-  const btnSimulasi = document.getElementById("btn-sample-simulasi");
   const btnTutupHasil = document.getElementById("btn-tutup-hasil");
 
   // Submit Form
@@ -684,21 +699,6 @@ function bindFormEvents() {
 
     updateActiveSymptomCounter();
     document.getElementById("hasil-diagnosa-wrapper").style.display = "none";
-  });
-
-  // Simulasi Jurnal (G02, G03, G04 = 0.8)
-  btnSimulasi.addEventListener("click", () => {
-    btnReset.click();
-
-    document.getElementById("nama-pemilik").value = "Devandi (Simulasi Jurnal Hal. 161)";
-    document.getElementById("nama-ikan").value = "Cupang Halfmoon Biru";
-
-    setSymptomValue("G02", 0.8);
-    setSymptomValue("G03", 0.8);
-    setSymptomValue("G04", 0.8);
-
-    updateActiveSymptomCounter();
-    eksekusiDiagnosa();
   });
 
   // Tutup Hasil
@@ -985,11 +985,6 @@ function tampilkanHasilLengkap(namaPemilik, namaIkan, utama, ranking, userSympto
 
 RINCIAN PROSES KOMPUTASI UNTUK HASIL TERTINGGI:
 ${utama.logSteps}
-
-==================================================
-AKURASI EVALUASI SISTEM DARI JURNAL:
-Akurasi Diagnosa = (Jumlah Kasus Sesuai / Total Kasus Uji) * 100%
-Akurasi Diagnosa = (25 / 30) * 100% = 83,33% (Sesuai Tabel 9 Jurnal).
 `;
   mathBox.textContent = mathContent;
 
