@@ -488,6 +488,9 @@ function initSymptomToolbar() {
         card.style.display = "none";
       }
     });
+
+    const wrapper = document.getElementById("symptoms-list-wrapper");
+    if (wrapper) wrapper.scrollTop = 0;
   }
 
   if (searchInput) {
