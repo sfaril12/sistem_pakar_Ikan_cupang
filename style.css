@@ -922,53 +922,114 @@ body {
 
 .identified-symptoms-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 14px;
 }
 
 .symptom-tag-card {
-  background-color: var(--bg-subtle);
+  background-color: #ffffff;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   transition: var(--transition-normal);
 }
 
 .symptom-tag-card:hover {
   background-color: #ffffff;
-  border-color: #bae6fd;
+  border-color: #7dd3fc;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-subtle);
+  box-shadow: 0 6px 14px rgba(2, 132, 199, 0.08);
 }
 
 .tag-card-top {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .tag-code {
   background: var(--primary-gradient);
   color: #ffffff;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(2, 132, 199, 0.25);
 }
 
 .tag-name {
-  font-size: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
   font-weight: 600;
+  color: var(--text-heading);
+  line-height: 1.35;
+}
+
+/* Format Metrik Bobot (User x Pakar = CF Gejala) */
+.tag-metrics {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  background-color: #f8fbff;
+  border: 1px solid #e0f2fe;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.tag-metric-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  text-align: center;
+}
+
+.tag-metric-box .metric-title {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.tag-metric-box .metric-num {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 700;
   color: var(--text-heading);
 }
 
-.tag-card-bottom {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+.tag-metric-divider {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: 600;
+  user-select: none;
+}
+
+.tag-metric-box.highlight {
+  background-color: #e0f2fe;
+  border-radius: 6px;
+  padding: 3px 6px;
+}
+
+.tag-metric-box.highlight .metric-title {
+  color: #0369a1;
+}
+
+.tag-metric-box.highlight .metric-num {
+  color: #0284c7;
+  font-size: 0.92rem;
 }
 
 .disease-description-box {
@@ -1170,29 +1231,263 @@ body {
 
 /* Komputasi Matematis */
 .calculation-section {
-  background-color: var(--bg-subtle);
-  border: 1px solid var(--border-light);
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 1px solid #bae6fd;
   border-radius: var(--radius-md);
   padding: 24px;
+}
+
+/* Formula Reference Cards */
+.formula-ref-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 640px) {
+  .formula-ref-grid { grid-template-columns: 1fr; }
+}
+
+.formula-ref-card {
+  background: #ffffff;
+  border: 1px solid #bae6fd;
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.07);
+}
+
+.formula-ref-label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.formula-ref-eq {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  background: #f0f9ff;
+  border: 1px solid #e0f2fe;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  letter-spacing: 0.01em;
+}
+
+.formula-ref-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Calc Steps Wrapper */
+.calc-steps-wrapper {
+  background: #ffffff;
+  border: 1px solid #e0f2fe;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.calc-steps-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #0284c7 0%, #0ea5e9 100%);
+  padding: 10px 18px;
+}
+
+.calc-steps-title {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.calc-steps-source {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.75);
+  font-style: italic;
+}
+
+/* Math Steps Detail Box */
+.math-steps-code {
+  padding: 20px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-heading);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  white-space: normal;
+  overflow-x: auto;
+}
+
+/* Calc Block */
+.calc-block {
+  margin-bottom: 18px;
+  border: 1px solid #e0f2fe;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.calc-block:last-of-type { margin-bottom: 14px; }
+
+.calc-block-label {
+  background: linear-gradient(90deg, #f0f9ff 0%, #e0f2fe 100%);
+  padding: 9px 16px;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0369a1;
+  border-bottom: 1px solid #bae6fd;
+  letter-spacing: 0.01em;
+}
+
+.calc-rows {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calc-row {
+  display: grid;
+  grid-template-columns: 28px 52px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #f8fbff;
+  border: 1px solid #e8f4fd;
+  transition: background 0.15s;
+}
+
+.calc-row:hover { background: #eef7ff; }
+
+.calc-row-init {
+  grid-template-columns: 28px 1fr auto;
+  background: #fff8e7;
+  border-color: #fde68a;
+}
+
+.calc-row-idx {
+  width: 24px;
+  height: 24px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  flex-shrink: 0;
+}
+
+.calc-row-code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: #e0f2fe;
+  border-radius: 4px;
+  padding: 2px 6px;
+  text-align: center;
+}
+
+.calc-row-name {
+  font-size: 0.82rem;
+  color: var(--text-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.calc-row-eq {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.calc-row-arrow {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.calc-row-result {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0369a1;
+  background: #dbeafe;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+/* Final Score Row */
+.calc-final-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(90deg, #0369a1 0%, #0284c7 100%);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-top: 4px;
+}
+
+.calc-final-label {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+}
+
+.calc-final-value {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(255,255,255,0.15);
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.calc-final-persen {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #7dd3fc;
+}
+
+/* Empty calc state */
+.calc-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  font-size: 0.875rem;
 }
 
 .calc-intro-text {
   font-size: 0.9rem;
   color: var(--text-body);
   margin-bottom: 12px;
-}
-
-.math-steps-code {
-  background-color: #ffffff;
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  padding: 18px;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.7;
-  color: var(--text-heading);
-  white-space: pre-wrap;
-  overflow-x: auto;
 }
 
 .result-footer-actions {

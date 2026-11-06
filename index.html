@@ -159,10 +159,6 @@
               <span class="meta-label">Identitas Ikan</span>
               <span id="hasil-nama-ikan" class="meta-data">-</span>
             </div>
-            <div class="meta-box meta-full">
-              <span class="meta-label">Kaidah Aturan Produksi (Forward Chaining)</span>
-              <span id="hasil-rule-matched" class="meta-code">-</span>
-            </div>
           </div>
 
           <!-- Rincian Gejala Terindikasi -->
@@ -215,12 +211,35 @@
           <!-- Rincian Komputasi Certainty Factor -->
           <div class="result-section calculation-section">
             <h3 class="result-section-heading">Rincian Komputasi Formula Matematis Jurnal</h3>
-            <p class="calc-intro-text">
-              Perhitungan menggunakan <strong>Persamaan (1)</strong> untuk bobot gejala ($CF(e) = CF_{\text{user}}
-              \times CF_{\text{pakar}}$) dan <strong>Persamaan (2)</strong> untuk kombinasi sekuensial
-              ($CF_{\text{gabungan}} = CF_1 + CF_2 \times (1 - CF_1)$).
-            </p>
-            <pre id="hasil-kalkulasi-detail" class="math-steps-code"></pre>
+
+            <!-- Formula Reference Cards -->
+            <div class="formula-ref-grid">
+              <div class="formula-ref-card">
+                <div class="formula-ref-label">Persamaan (1) — Bobot Gejala</div>
+                <div class="formula-ref-eq">
+                  CF[h,e] = CF<sub>user</sub> &times; CF<sub>pakar</sub>
+                </div>
+                <div class="formula-ref-desc">Mengalikan keyakinan pengguna dengan bobot pakar untuk setiap gejala yang
+                  terdeteksi.</div>
+              </div>
+              <div class="formula-ref-card">
+                <div class="formula-ref-label">Persamaan (2) — Kombinasi Sekuensial</div>
+                <div class="formula-ref-eq">
+                  CF<sub>gabungan</sub> = CF<sub>1</sub> + CF<sub>2</sub> &times; (1 &minus; CF<sub>1</sub>)
+                </div>
+                <div class="formula-ref-desc">Menggabungkan nilai CF gejala secara berurutan hingga menghasilkan skor
+                  akhir penyakit.</div>
+              </div>
+            </div>
+
+            <!-- Langkah Komputasi Detail -->
+            <div class="calc-steps-wrapper">
+              <div class="calc-steps-header">
+                <span class="calc-steps-title">Jejak Komputasi — Penyakit Tertinggi</span>
+                <span class="calc-steps-source">Sumber: JOISM Vol. 5 No. 2, 2024</span>
+              </div>
+              <div id="hasil-kalkulasi-detail" class="math-steps-code"></div>
+            </div>
           </div>
 
           <!-- Footer Aksi Hasil -->

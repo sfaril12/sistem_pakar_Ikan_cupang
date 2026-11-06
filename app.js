@@ -803,25 +803,27 @@ function eksekusiDiagnosa() {
     let cfFinal = 0.0;
 
     if (gejalaCocok.length > 0) {
-      logSteps.push(`[${kodePenyakit}] ${DATA_PENYAKIT[kodePenyakit].nama}:`);
-      gejalaCocok.forEach(item => {
-        logSteps.push(`- ${item.kode}: CF_User(${item.cfUser}) * CF_Pakar(${item.cfPakar}) = ${item.cfE.toFixed(3)}`);
-      });
-
       let cfCombine = gejalaCocok[0].cfE;
-      logSteps.push(`Langkah Awal: CF_Gabungan(1) = ${cfCombine.toFixed(3)}`);
+      const combineSteps = [];
 
       for (let i = 1; i < gejalaCocok.length; i++) {
         const nextVal = gejalaCocok[i].cfE;
         const prev = cfCombine;
         cfCombine = prev + nextVal * (1 - prev);
-        logSteps.push(`Kombinasi ke-${i + 1}: ${prev.toFixed(3)} + ${nextVal.toFixed(3)} * (1 - ${prev.toFixed(3)}) = ${cfCombine.toFixed(4)}`);
+        combineSteps.push({ step: i + 1, prev: prev.toFixed(3), next: nextVal.toFixed(3), result: cfCombine.toFixed(4) });
       }
 
       cfFinal = cfCombine;
-      logSteps.push(`-> Skor CF Akhir = ${cfFinal.toFixed(4)} (~${(cfFinal * 100).toFixed(2)}%)`);
-    } else {
-      logSteps.push(`Tidak ada gejala yang cocok untuk ${kodePenyakit}.`);
+
+      logSteps.push({
+        kode: kodePenyakit,
+        nama: DATA_PENYAKIT[kodePenyakit].nama,
+        gejala: gejalaCocok,
+        cfAwal: gejalaCocok[0].cfE.toFixed(3),
+        combineSteps: combineSteps,
+        cfFinal: cfFinal.toFixed(4),
+        cfPersen: (cfFinal * 100).toFixed(2) + "%"
+      });
     }
 
     kalkulasiList.push({
@@ -832,7 +834,7 @@ function eksekusiDiagnosa() {
       cfPersen: (cfFinal * 100).toFixed(1) + "%",
       gejalaCocok: gejalaCocok,
       matchRatio: `${matchCount}/${totalRuleGejala}`,
-      logSteps: logSteps.join("\n")
+      logSteps: logSteps
     });
   });
 
@@ -857,7 +859,8 @@ function tampilkanHasilTanpaGejala(namaPemilik, namaIkan) {
 
   document.getElementById("hasil-nama-pemilik").textContent = namaPemilik;
   document.getElementById("hasil-nama-ikan").textContent = namaIkan;
-  document.getElementById("hasil-rule-matched").textContent = "Tidak Ada Premis Gejala Terpilih";
+  const elRuleSehat = document.getElementById("hasil-rule-matched");
+  if (elRuleSehat) elRuleSehat.textContent = "Tidak Ada Premis Gejala Terpilih";
 
   document.getElementById("hasil-daftar-gejala-terpilih").innerHTML = `
     <div class="symptom-tag-card" style="grid-column: 1 / -1;">
@@ -875,14 +878,14 @@ function tampilkanHasilTanpaGejala(namaPemilik, namaIkan) {
     "<p>Pertahankan suhu air stabil (26°C - 28°C), gunakan air endapan bersih, dan berikan pakan hidup yang higienis secukupnya.</p>";
 
   document.getElementById("hasil-ranking-tbody").innerHTML = `
-    <tr>
-      <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 18px;">
-        Tidak ada peringkat penyakit karena seluruh gejala bernilai netral (0.0).
-      </td>
-    </tr>
-  `;
+      <tr>
+        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 18px;">
+          Tidak ada peringkat penyakit karena seluruh gejala bernilai netral (0.0).
+        </td>
+      </tr>
+    `;
 
-  document.getElementById("hasil-kalkulasi-detail").textContent = "Tidak ada proses komputasi Certainty Factor.";
+  document.getElementById("hasil-kalkulasi-detail").innerHTML = `<div class="calc-empty">Tidak ada proses komputasi Certainty Factor.</div>`;
   wrapper.scrollIntoView({ behavior: "smooth" });
 }
 
@@ -913,7 +916,8 @@ function tampilkanHasilLengkap(namaPemilik, namaIkan, utama, ranking, userSympto
   // Metadata Konsultasi
   document.getElementById("hasil-nama-pemilik").textContent = namaPemilik;
   document.getElementById("hasil-nama-ikan").textContent = namaIkan;
-  document.getElementById("hasil-rule-matched").textContent = utama.rule;
+  const elRuleMatched = document.getElementById("hasil-rule-matched");
+  if (elRuleMatched) elRuleMatched.textContent = utama.rule;
 
   // Render Kartu Gejala Terindikasi
   const containerGejala = document.getElementById("hasil-daftar-gejala-terpilih");
@@ -929,8 +933,21 @@ function tampilkanHasilLengkap(namaPemilik, namaIkan, utama, ranking, userSympto
           <span class="tag-code">${gc.kode}</span>
           <span class="tag-name">${gObj ? gObj.nama : gc.kode}</span>
         </div>
-        <div class="tag-card-bottom">
-          Keyakinan Pengguna: <strong>${gc.cfUser}</strong> &bull; Bobot Pakar: <strong>${gc.cfPakar}</strong> &bull; CF Gejala: <strong>${gc.cfE.toFixed(2)}</strong>
+        <div class="tag-metrics">
+          <div class="tag-metric-box">
+            <span class="metric-title">User</span>
+            <span class="metric-num">${gc.cfUser}</span>
+          </div>
+          <div class="tag-metric-divider">&times;</div>
+          <div class="tag-metric-box">
+            <span class="metric-title">Pakar</span>
+            <span class="metric-num">${gc.cfPakar}</span>
+          </div>
+          <div class="tag-metric-divider">=</div>
+          <div class="tag-metric-box highlight">
+            <span class="metric-title">CF Gejala</span>
+            <span class="metric-num">${gc.cfE.toFixed(2)}</span>
+          </div>
         </div>
       `;
       containerGejala.appendChild(card);
@@ -945,8 +962,11 @@ function tampilkanHasilLengkap(namaPemilik, namaIkan, utama, ranking, userSympto
           <span class="tag-code">${code}</span>
           <span class="tag-name">${gObj ? gObj.nama : code}</span>
         </div>
-        <div class="tag-card-bottom">
-          Keyakinan Pengguna: <strong>${userSymptoms[code]}</strong>
+        <div class="tag-metrics">
+          <div class="tag-metric-box highlight">
+            <span class="metric-title">Keyakinan User</span>
+            <span class="metric-num">${userSymptoms[code]}</span>
+          </div>
         </div>
       `;
       containerGejala.appendChild(card);
@@ -961,7 +981,6 @@ function tampilkanHasilLengkap(namaPemilik, namaIkan, utama, ranking, userSympto
   // Tabel Peringkat Semua Penyakit
   const tbodyRanking = document.getElementById("hasil-ranking-tbody");
   tbodyRanking.innerHTML = "";
-
   ranking.forEach((r, idx) => {
     const tr = document.createElement("tr");
     if (idx === 0) tr.className = "top-rank-row";
@@ -977,16 +996,74 @@ function tampilkanHasilLengkap(namaPemilik, namaIkan, utama, ranking, userSympto
     tbodyRanking.appendChild(tr);
   });
 
-  // Komputasi Matematis
+  // Komputasi Matematis — render sebagai HTML terstruktur
   const mathBox = document.getElementById("hasil-kalkulasi-detail");
-  const mathContent = `FORMULA CERTAINTY FACTOR (JOISM VOL. 5, NO. 2, 2024):
-1. Persamaan (1): CF[h, e] = CF_User * CF_Pakar
-2. Persamaan (2): CF_Gabungan(X, Y) = CF(X) + CF(Y) * (1 - CF(X))
+  const steps = utama.logSteps; // array of step objects
 
-RINCIAN PROSES KOMPUTASI UNTUK HASIL TERTINGGI:
-${utama.logSteps}
-`;
-  mathBox.textContent = mathContent;
+  if (!steps || steps.length === 0) {
+    mathBox.innerHTML = `<div class="calc-empty">Tidak ada proses komputasi Certainty Factor.</div>`;
+  } else {
+    const s = steps[0];
+    let html = "";
+
+    // Blok Persamaan (1)
+    html += `<div class="calc-block">`;
+    html += `<div class="calc-block-label">① Persamaan (1) — CF[h,e] = CF<sub>user</sub> × CF<sub>pakar</sub></div>`;
+    html += `<div class="calc-rows">`;
+    s.gejala.forEach((g, i) => {
+      const gObj = DATA_GEJALA.find(x => x.kode === g.kode);
+      html += `
+        <div class="calc-row">
+          <span class="calc-row-idx">${i + 1}</span>
+          <span class="calc-row-code">${g.kode}</span>
+          <span class="calc-row-name">${gObj ? gObj.nama : g.kode}</span>
+          <span class="calc-row-eq">
+            ${g.cfUser} &times; ${g.cfPakar}
+            <span class="calc-row-arrow">=</span>
+            <strong class="calc-row-result">${g.cfE.toFixed(3)}</strong>
+          </span>
+        </div>`;
+    });
+    html += `</div></div>`;
+
+    // Blok Persamaan (2)
+    html += `<div class="calc-block">`;
+    html += `<div class="calc-block-label">② Persamaan (2) — CF<sub>gabungan</sub> = CF<sub>1</sub> + CF<sub>2</sub> × (1 − CF<sub>1</sub>)</div>`;
+    html += `<div class="calc-rows">`;
+    html += `
+      <div class="calc-row calc-row-init">
+        <span class="calc-row-idx">0</span>
+        <span class="calc-row-name">Nilai awal CF gejala pertama (${s.gejala[0].kode})</span>
+        <span class="calc-row-eq"><strong class="calc-row-result">${s.cfAwal}</strong></span>
+      </div>`;
+    if (s.combineSteps.length === 0) {
+      html += `<div class="calc-row"><span class="calc-row-name" style="grid-column:2/-1; color:var(--text-muted);">Hanya 1 gejala — tidak ada kombinasi sekuensial.</span></div>`;
+    } else {
+      s.combineSteps.forEach(cs => {
+        html += `
+          <div class="calc-row">
+            <span class="calc-row-idx">${cs.step}</span>
+            <span class="calc-row-name">Kombinasi ke-${cs.step}</span>
+            <span class="calc-row-eq">
+              ${cs.prev} + ${cs.next} &times; (1 &minus; ${cs.prev})
+              <span class="calc-row-arrow">=</span>
+              <strong class="calc-row-result">${cs.result}</strong>
+            </span>
+          </div>`;
+      });
+    }
+    html += `</div></div>`;
+
+    // Skor Akhir
+    html += `
+      <div class="calc-final-row">
+        <span class="calc-final-label">Skor CF Akhir — ${s.kode} (${s.nama})</span>
+        <span class="calc-final-value">${s.cfFinal}</span>
+        <span class="calc-final-persen">${s.cfPersen}</span>
+      </div>`;
+
+    mathBox.innerHTML = html;
+  }
 
   wrapper.scrollIntoView({ behavior: "smooth" });
 }
